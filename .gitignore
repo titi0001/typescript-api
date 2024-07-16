@@ -24,5 +24,4 @@ Thumbs.db
 .idea/
 
 # Add database.sqllite to .gitignore
-*.sqlite
 src/config/database.sqlite
