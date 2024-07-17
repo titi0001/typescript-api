@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import EnderecoEntity from "./Endereco";
 import PetEntity from "./PetEntity";
 
@@ -12,12 +19,12 @@ export default class AdotanteEntity {
   senha: string;
   @Column()
   celular: string;
-  @Column({nullable: true})
+  @Column({ nullable: true })
   foto?: string;
   @OneToOne(() => EnderecoEntity, {
-    nullable: true, 
-    cascade: true, 
-    eager: true
+    nullable: true,
+    cascade: true,
+    eager: true,
   })
   @JoinColumn()
   endereco?: EnderecoEntity;
@@ -29,15 +36,12 @@ export default class AdotanteEntity {
     senha: string,
     celular: string,
     foto?: string,
-    endereco?: EnderecoEntity,
-    
-
+    endereco?: EnderecoEntity
   ) {
     this.nome = nome;
     this.senha = senha;
     this.celular = celular;
     this.foto = foto;
     this.endereco = endereco;
-
   }
 }
