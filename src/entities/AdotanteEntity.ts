@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -8,6 +10,7 @@ import {
 } from "typeorm";
 import EnderecoEntity from "./Endereco";
 import PetEntity from "./PetEntity";
+import { criaSenhaCriptografada } from "../utils/senhaCriptografada";
 
 @Entity()
 export default class AdotanteEntity {
@@ -43,5 +46,11 @@ export default class AdotanteEntity {
     this.celular = celular;
     this.foto = foto;
     this.endereco = endereco;
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  private async cripografarSenha(senha: string): Promise<void> {
+    this.senha = await criaSenhaCriptografada(this.senha);
   }
 }
