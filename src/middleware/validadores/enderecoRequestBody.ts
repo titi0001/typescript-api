@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as yup from "yup";
 import { pt } from "yup-locale-pt";
 import EnderecoEntity from "../../entities/Endereco";
+import tratarErroValidacaoYup from "../../utils/tratarValidacaoYup";
 
 yup.setLocale(pt);
 
@@ -16,22 +17,7 @@ const middlewareValidadorBodyEndereco = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    await esquemaBodyEndereco.validate(req.body, { abortEarly: false });
-    return next();
-  } catch (error) {
-    const yupError = error as yup.ValidationError;
-
-    const validationErros: Record<string, string> = {};
-
-    yupError.inner.forEach((error) => {
-      if (!error.path) return;
-
-      validationErros[error.path] = error.message;
-    });
-
-    return res.status(400).json({ error: validationErros });
-  }
+  tratarErroValidacaoYup(esquemaBodyEndereco, req, res, next);
 };
 
 export { middlewareValidadorBodyEndereco };

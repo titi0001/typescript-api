@@ -7,7 +7,6 @@ type TipoResponseBodyAdotante = {
   data?:
     | Pick<AdotanteEntity, "id" | "nome" | "celular" | "endereco">
     | Pick<AdotanteEntity, "id" | "nome" | "celular" | "endereco">[];
-  error?: unknown;
 };
 
 export {

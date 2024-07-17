@@ -20,7 +20,6 @@ export default class PetController {
       req.body
     );
 
-
     const novoPet = new PetEntity(
       nome,
       especie,
@@ -54,14 +53,8 @@ export default class PetController {
     res: Response<TipoResponseBodyPet>
   ) {
     const { id } = req.params;
-    const { success, message } = await this.repository.atualizaPet(
-      Number(id),
-      req.body as PetEntity
-    );
+    await this.repository.atualizaPet(Number(id), req.body as PetEntity);
 
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.status(204);
   }
 
@@ -70,12 +63,8 @@ export default class PetController {
     res: Response<TipoResponseBodyPet>
   ) {
     const { id } = req.params;
+    await this.repository.deletaPet(Number(id));
 
-    const { success, message } = await this.repository.deletaPet(Number(id));
-
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.sendStatus(204);
   }
 
@@ -84,15 +73,8 @@ export default class PetController {
     res: Response<TipoResponseBodyPet>
   ) {
     const { pet_id, adotante_id } = req.params;
+    await this.repository.adotaPet(Number(pet_id), Number(adotante_id));
 
-    const { success, message } = await this.repository.adotaPet(
-      Number(pet_id),
-      Number(adotante_id)
-    );
-
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.sendStatus(204);
   }
 

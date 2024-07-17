@@ -50,14 +50,11 @@ export default class AdotanteController {
     res: Response<TipoResponseBodyAdotante>
   ) {
     const { id } = req.params;
-    const { success, message } = await this.repository.atulizaAdotante(
+    await this.repository.atulizaAdotante(
       Number(id),
       req.body as AdotanteEntity
     );
 
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.sendStatus(204);
   }
 
@@ -66,13 +63,8 @@ export default class AdotanteController {
     res: Response<TipoResponseBodyAdotante>
   ) {
     const { id } = req.params;
-    const { success, message } = await this.repository.deletaAdotante(
-      Number(id)
-    );
+    await this.repository.deletaAdotante(Number(id));
 
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.sendStatus(204);
   }
 
@@ -81,14 +73,8 @@ export default class AdotanteController {
     res: Response<TipoResponseBodyAdotante>
   ) {
     const { id } = req.params;
-    const { success, message } = await this.repository.atulizaEnderecoAdotante(
-      Number(id),
-      req.body
-    );
+    await this.repository.atulizaEnderecoAdotante(Number(id), req.body);
 
-    if (!success) {
-      return res.status(404).json({ error: message });
-    }
     return res.sendStatus(204);
   }
 }

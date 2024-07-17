@@ -22,10 +22,7 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
     return await this.repository.find();
   }
 
-  async atulizaAdotante(
-    id: number,
-    adotante: AdotanteEntity
-  ): Promise<{ success: boolean; message?: string }> {
+  async atulizaAdotante(id: number, adotante: AdotanteEntity) {
     const adotanteToUpdate = await this.repository.findOne({ where: { id } });
 
     if (!adotanteToUpdate) {
@@ -36,9 +33,7 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
     await this.repository.save(adotanteToUpdate);
     return { success: true };
   }
-  async deletaAdotante(
-    id: number
-  ): Promise<{ success: boolean; message?: string }> {
+  async deletaAdotante(id: number) {
     const adotanteToRemove = await this.repository.findOne({ where: { id } });
 
     if (!adotanteToRemove) {
@@ -49,10 +44,7 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
     return { success: true };
   }
 
-  async atulizaEnderecoAdotante(
-    idAdotante: number,
-    endereco: EnderecoEntity
-  ): Promise<{ success: boolean; message?: string }> {
+  async atulizaEnderecoAdotante(idAdotante: number, endereco: EnderecoEntity) {
     const adotante = await this.repository.findOne({
       where: { id: idAdotante },
     });
