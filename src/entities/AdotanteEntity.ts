@@ -51,6 +51,8 @@ export default class AdotanteEntity {
   @BeforeInsert()
   @BeforeUpdate()
   private async cripografarSenha(senha: string): Promise<void> {
-    this.senha = await criaSenhaCriptografada(this.senha);
+    if (this.senha) {
+    this.senha = criaSenhaCriptografada(this.senha);
+    }
   }
 }
