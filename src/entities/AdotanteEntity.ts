@@ -20,7 +20,7 @@ export default class AdotanteEntity {
   nome: string;
   @Column()
   senha: string;
-  @Column()
+  @Column({ unique: true })
   celular: string;
   @Column({ nullable: true })
   foto?: string;
@@ -52,7 +52,7 @@ export default class AdotanteEntity {
   @BeforeUpdate()
   private async cripografarSenha(senha: string): Promise<void> {
     if (this.senha) {
-    this.senha = criaSenhaCriptografada(this.senha);
+      this.senha = criaSenhaCriptografada(this.senha);
     }
   }
 }

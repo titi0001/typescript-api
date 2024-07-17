@@ -2,13 +2,20 @@ import { Repository } from "typeorm";
 import AdotanteEntity from "../entities/AdotanteEntity";
 import InterfaceAdotanteRepository from "./interfaces/InterfaceAdotanteRepository";
 import EnderecoEntity from "../entities/Endereco";
-import { NaoEncontrado } from "../utils/manipulaErros";
+import { NaoEncontrado, RequisicaoRuim } from "../utils/manipulaErros";
 
 export default class AdotanteRepository implements InterfaceAdotanteRepository {
   constructor(private repository: Repository<AdotanteEntity>) {}
 
-  criaAdotante(adotante: AdotanteEntity): void | Promise<void> {
-    this.repository.save(adotante);
+  private async verificaCelularAdotante(celular: string) {
+    return await this.repository.findOne({ where: { celular } });
+  }
+
+  async criaAdotante(adotante: AdotanteEntity): Promise<void> {
+    if (await this.verificaCelularAdotante(adotante.celular)) {
+      throw new RequisicaoRuim("Celular já cadastrado");
+    }
+    await this.repository.save(adotante);
   }
 
   async listAdotantes(): Promise<AdotanteEntity[]> {
@@ -46,18 +53,18 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
     idAdotante: number,
     endereco: EnderecoEntity
   ): Promise<{ success: boolean; message?: string }> {
-      const adotante = await this.repository.findOne({
-        where: { id: idAdotante },
-      });
+    const adotante = await this.repository.findOne({
+      where: { id: idAdotante },
+    });
 
-      if (!adotante) {
-        throw new NaoEncontrado("Adotante não encontrado");
-      }
-
-      const novoEndereco = new EnderecoEntity(endereco.cidade, endereco.estado);
-      adotante.endereco = novoEndereco;
-      await this.repository.save(adotante);
-
-      return { success: true };
+    if (!adotante) {
+      throw new NaoEncontrado("Adotante não encontrado");
     }
+
+    const novoEndereco = new EnderecoEntity(endereco.cidade, endereco.estado);
+    adotante.endereco = novoEndereco;
+    await this.repository.save(adotante);
+
+    return { success: true };
+  }
 }
