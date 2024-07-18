@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import AbrigoRepository from "../repositories/AbrigoRepository";
-import { TipoRequestBodyAbrigo, TipoRequestParamsAbrigo, TipoResponseBodyAbrigo } from "../types/tiposAbrigo";
+import {
+  TipoRequestBodyAbrigo,
+  TipoRequestParamsAbrigo,
+  TipoResponseBodyAbrigo,
+} from "../types/tiposAbrigo";
 import AbrigoEntity from "../entities/AbrigoEntity";
+import { EnumHttpStatusCode } from "../enum/EnumHttpStatusCode";
+import EnderecoEntity from "../entities/Endereco";
 
 export default class AbrigoController {
   constructor(private repository: AbrigoRepository) {}
@@ -12,13 +18,7 @@ export default class AbrigoController {
   ) {
     const { nome, celular, endereco, email, senha } = <AbrigoEntity>req.body;
 
-    const novoAbrigo = new AbrigoEntity(
-      nome,
-      senha,
-      email,
-      celular,
-      endereco
-    );
+    const novoAbrigo = new AbrigoEntity(nome, senha, email, celular, endereco);
 
     await this.repository.criaAbrigo(novoAbrigo);
     return res
@@ -31,13 +31,15 @@ export default class AbrigoController {
     res: Response<TipoResponseBodyAbrigo>
   ) {
     const listaDeAbrigos = await this.repository.listAbrigos();
-    const data = listaDeAbrigos.map(({ id, nome, celular, endereco, email }) => ({
-      id,
-      nome,
-      celular,
-      endereco: endereco !== null ? endereco : undefined,
-      email
-    }));
+    const data = listaDeAbrigos.map(
+      ({ id, nome, celular, endereco, email }) => ({
+        id,
+        nome,
+        celular,
+        endereco: endereco !== null ? endereco : undefined,
+        email,
+      })
+    );
     return res.status(200).json({ data });
   }
 
@@ -46,10 +48,7 @@ export default class AbrigoController {
     res: Response<TipoResponseBodyAbrigo>
   ) {
     const { id } = req.params;
-    await this.repository.atulizaAbrigo(
-      Number(id),
-      req.body as AbrigoEntity
-    );
+    await this.repository.atulizaAbrigo(Number(id), req.body as AbrigoEntity);
 
     return res.sendStatus(204);
   }
@@ -64,4 +63,13 @@ export default class AbrigoController {
     return res.sendStatus(204);
   }
 
+  async atulizaEnderecoAbrigo(
+    req: Request<TipoRequestParamsAbrigo, {}, EnderecoEntity>,
+    res: Response<TipoResponseBodyAbrigo>
+  ) {
+    const { id } = req.params;
+    await this.repository.atulizaEnderecoAbrigo(Number(id), req.body);
+
+    return res.sendStatus(EnumHttpStatusCode.OK);
+  }
 }
