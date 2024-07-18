@@ -4,6 +4,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -30,7 +31,7 @@ export default class AbrigoEntity {
   })
   @JoinColumn()
   endereco?: EnderecoEntity;
-  @OneToOne(() => PetEntity, (pet) => pet.abrigo)
+  @OneToMany(() => PetEntity, (pet) => pet.abrigo)
   pets!: PetEntity[];
 
   constructor(
