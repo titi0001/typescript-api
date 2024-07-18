@@ -2,7 +2,7 @@ import AbrigoEntity from "../../entities/AbrigoEntity";
 import EnderecoEntity from "../../entities/Endereco";
 
 export default interface interfaceAbrigoRepository {
-  criaAbrigo(adotante: AbrigoEntity): void | Promise<void>;
+  criaAbrigo(abrigo: AbrigoEntity): void | Promise<void>;
 
   listAbrigos(): AbrigoEntity[] | Promise<AbrigoEntity[]>;
 
