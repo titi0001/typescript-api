@@ -26,9 +26,13 @@ router.post("/", validateBodyAbrigo, (req, res) =>
 
 router.get("/", (req, res) => abrigoController.listaAbrigos(req, res));
 
-router.put("/:id", (req, res) => abrigoController.atualizaAbrigo(req, res));
+router.put("/:id", verificaIdMiddleware, (req, res) =>
+  abrigoController.atualizaAbrigo(req, res)
+);
 
-router.delete("/:id", (req, res) => abrigoController.deletaAbrigo(req, res));
+router.delete("/:id", verificaIdMiddleware, (req, res) =>
+  abrigoController.deletaAbrigo(req, res)
+);
 
 router.patch("/:id", verificaIdMiddleware, validateBodyEndereco, (req, res) =>
   abrigoController.atulizaEnderecoAbrigo(req, res)
