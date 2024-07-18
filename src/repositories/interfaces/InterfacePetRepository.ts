@@ -3,8 +3,11 @@ import EnumPorte from "../../enum/EnumPorte";
 
 export default interface interfacePetRepository {
   criaPet(pet: PetEntity): void;
+
   listaPets(): Array<PetEntity> | Promise<PetEntity[]>;
+
   atualizaPet(id: number, pet: PetEntity): void;
+
   deletaPet(
     id: number,
     pet: PetEntity
