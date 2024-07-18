@@ -14,6 +14,7 @@ const adotanteRepository = new AdotanteRepository(
 );
 
 const adotanteController = new AdotanteController(adotanteRepository);
+
 const validateBodyAdotante: RequestHandler = (req, res, next) =>
   middlewareValidadorBodyAdotante(req, res, next);
 
