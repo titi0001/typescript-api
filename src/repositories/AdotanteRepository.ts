@@ -3,16 +3,14 @@ import AdotanteEntity from "../entities/AdotanteEntity";
 import InterfaceAdotanteRepository from "./interfaces/InterfaceAdotanteRepository";
 import EnderecoEntity from "../entities/Endereco";
 import { NaoEncontrado, RequisicaoRuim } from "../utils/manipulaErros";
+import { verificaCelular } from "../utils/verifica";
 
 export default class AdotanteRepository implements InterfaceAdotanteRepository {
   constructor(private repository: Repository<AdotanteEntity>) {}
 
-  private async verificaCelularAdotante(celular: string) {
-    return await this.repository.findOne({ where: { celular } });
-  }
 
   async criaAdotante(adotante: AdotanteEntity): Promise<void> {
-    if (await this.verificaCelularAdotante(adotante.celular)) {
+    if (await verificaCelular(this.repository, adotante.celular)) {
       throw new RequisicaoRuim("Celular já cadastrado");
     }
     await this.repository.save(adotante);
