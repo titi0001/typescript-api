@@ -1,4 +1,12 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import EnderecoEntity from "./Endereco";
 import { criaSenhaCriptografada } from "../utils/senhaCriptografada";
 import PetEntity from "./PetEntity";
@@ -11,9 +19,9 @@ export default class AbrigoEntity {
   nome: string;
   @Column()
   senha: string;
-  @Column()
+  @Column({ unique: true })
   email: string;
-  @Column()
+  @Column({ unique: true })
   celular: string;
   @OneToOne(() => EnderecoEntity, {
     nullable: true,
